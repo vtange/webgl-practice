@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Babylon.js</title>
+    <script src="js/babylon.js"></script>
+     
+    <script type="application/vertexShader" id="vertexShaderCode">
+        precision highp float;
+ 
+        // Attributes
+        attribute vec3 position;
+        attribute vec2 uv;
+ 
+        // Uniforms
+        uniform mat4 worldViewProjection;
+ 
+        // Normal
+        varying vec2 vUV;
+ 
+        void main(void) {
+        gl_Position = worldViewProjection * vec4(position, 1.0);
+ 
+        vUV = uv;
+        }
+    </script>
+   
+    <script type="application/fragmentShader" id="fragmentShaderCode">
+        precision highp float;
+        varying vec2 vUV;
+ 
+        uniform sampler2D textureSampler;
+ 
+        void main(void) {
+        gl_FragColor = texture2D(textureSampler, vUV);
+        }
+    </script>
+ 
+    <script src="js/index.js"></script>
+    <style>
+        html, body {
+            width: 100%;
+            height: 100%;
+            padding: 0;
+            margin: 0;
+            overflow: hidden;
+            margin: 0px;
+            overflow: hidden;
+        }
+ 
+        #renderCanvas {
+            width: 100%;
+            height: 100%;
+            touch-action: none;
+            -ms-touch-action: none;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="renderCanvas"></canvas>
+</body>
+</html>
