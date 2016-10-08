@@ -8,23 +8,28 @@ function startGame() {
         var engine = new BABYLON.Engine(canvas, false);
         var scene = new BABYLON.Scene(engine);
         var camera = new BABYLON.ArcRotateCamera("Camera", 0, Math.PI / 2, 10, BABYLON.Vector3.Zero(), scene);
- 
         camera.attachControl(canvas);
- 
-        // Creating sphere
-        var sphere = BABYLON.Mesh.CreateSphere("Sphere", 16, 5, scene);
- 
-        var amigaMaterial = new BABYLON.ShaderMaterial("amiga", scene, {
+        
+        // Compile
+        var shaderMaterial = new BABYLON.ShaderMaterial("shader", scene, {
             vertexElement: "vertexShaderCode",
             fragmentElement: "fragmentShaderCode",
         },
-        {
-            attributes: ["position", "uv"],
-            uniforms: ["worldViewProjection"]
-        });
-        amigaMaterial.setTexture("textureSampler", new BABYLON.Texture("amiga.jpg", scene));
- 
-        sphere.material = amigaMaterial;
+            {
+                attributes: ["position", "normal", "uv"],
+                uniforms: ["world", "worldView", "worldViewProjection"]
+            });
+        
+        var amigaTexture = new BABYLON.Texture("amiga.jpg", scene);
+        
+        shaderMaterial.setTexture("textureSampler", amigaTexture);
+        shaderMaterial.setFloat("time", 0);
+        shaderMaterial.setVector3("cameraPosition", BABYLON.Vector3.Zero());
+        shaderMaterial.backFaceCulling = false;
+
+        // Creating sphere
+        var sphere = BABYLON.Mesh.CreateSphere("Sphere", 16, 5, scene);
+        sphere.material = shaderMaterial;
  
         engine.runRenderLoop(function () {
             sphere.rotation.y += 0.05;
