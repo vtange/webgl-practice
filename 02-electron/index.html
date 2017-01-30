@@ -3,9 +3,12 @@
 <head>
 	<meta charset="UTF-8" />
 	<title>WebGL Practice 1 - Toad Attack</title>
-    <link rel="stylesheet" type="text/css" href="css/style.css" />
-        <script src="js/babylon.js"></script>
-        <script src="js/initScene.js"></script>
+	<script src="assets/babylon.js"></script>
+	<script src="js/entities/Lane.js"></script>
+	<script src="js/entities/Shroom.js"></script>
+	<script src="js/Scene.js"></script>
+	<script src="js/BABYLON_GAME.js"></script>
+	<script src="js/initGame.js"></script>
 	<style>
 	html, body {
 		height: 100%;
@@ -15,7 +18,7 @@
 		overflow: hidden;
 		position: fixed;
 	}
-	#renderCanvas {
+	#BABYLON_GAME {
 		width: 100%;
 		height: 100%;
 		margin: 0;
@@ -24,6 +27,6 @@
 	</style>
 </head>
 <body>
-    <canvas id="renderCanvas"></canvas>
+    <canvas id="BABYLON_GAME"></canvas>
 </body>
 </html>
