@@ -112,7 +112,7 @@ Scene.prototype.buildWorld = function(gameState){
 	/*----------------
 	CAMERA
 	----------------*/
-	this.camera.position.x = gameState.LANES_POSITIONS[Math.floor(this.options.NO_OF_LANES/2)];
+	this.camera.position.x = gameState.LANES_POSITIONS[Math.floor(this.options.NO_OF_LANES/2)].position;
 
 	/*----------------
 	RECURRING ELEMENTS
@@ -126,20 +126,21 @@ Scene.prototype.createEnemy = function(gameState){
 	var posZ = 100;
 
 	// Get a random lane
-	var posX = gameState.LANES_POSITIONS[Math.floor(Math.random() * this.options.NO_OF_LANES)];
+	var posX = gameState.LANES_POSITIONS[Math.floor(Math.random() * this.options.NO_OF_LANES)].position;
 
 	var TOAD_MODEL = gameState.MODELS["red_toad"];
 
 	// Create a clone of our template
 	var shroom = new Shroom(TOAD_MODEL.clone(TOAD_MODEL.name), gameState.ENEMIES);
+	//shroom.m == model 
 
-	shroom.id = TOAD_MODEL.name+(gameState.ENEMIES.length+1);
+	shroom.m.id = TOAD_MODEL.name+(gameState.ENEMIES.length+1);
 	// Our toad has not been killed yet !
 	shroom.killed = false;
 	// Set the shroom visible
-	shroom.isVisible = true;
+	shroom.m.isVisible = true;
 	// Update its position
-	shroom.position = new BABYLON.Vector3(posX, shroom.m.position.y/2, posZ);
+	shroom.m.position = new BABYLON.Vector3(posX, TOAD_MODEL.position.y/2, posZ);
 
 	gameState.ENEMIES.push(shroom);
 }
