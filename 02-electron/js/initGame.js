@@ -1,16 +1,3 @@
-//Game elements
-var gameState = {
-	score: 0, // the score
-	// An array to store each lane
-	LANES_POSITIONS: [],
-	// An array to store each tail of the lane
-	TAILS: [],
-	// An array to store existing Toads, and a variable for the model
-	ENEMIES: [],
-	// A dictionary of loaded meshes
-	MODELS:{}
-};
-
 /**
 * Load the scene when the canvas is fully loaded
 */

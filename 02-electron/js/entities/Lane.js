@@ -1,7 +1,7 @@
 function Lane(position){
     this.position = position;
-    this.lane = null;
     this.tail = null;
+	this.ownerScene = null;
 }
 
 Lane.prototype.animate = function() {
@@ -30,7 +30,7 @@ Lane.prototype.animate = function() {
 	this.tail.animations.push(animateTail);
 
 	// Run the animation !
-	sceneObj.self.beginAnimation(this.tail, 0, 10, false, 1);
+	this.ownerScene.beginAnimation(this.tail, 0, 10, false, 1);
 
 };
 
@@ -42,7 +42,7 @@ Lane.prototype.create = function(id, position, material, scene) {
 	lane.position.x = position;
 	lane.position.z = lane.scaling.z/2-200;
 	lane.material = material;
-	this.lane = lane;
+	this.ownerScene = scene;
 	return lane;
 }
 
