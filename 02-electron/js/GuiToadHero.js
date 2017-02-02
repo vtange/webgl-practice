@@ -1,19 +1,19 @@
 function GuiToadHero(){
-	this.score = 0, // the score
+	this.score = 0; // the score
 	// An array to store each lane
-	this.LANES_POSITIONS = [],
+	this.LANES_POSITIONS = [];
 	// An array to store each tail of the lane
-	this.TAILS = [],
+	this.TAILS = [];
 	// An array to store existing Toads, and a variable for the model
-	this.ENEMIES = [],
+	this.ENEMIES = [];
 	// A dictionary of loaded meshes
-	this.MODELS = {}
+	this.MODELS = {};
 	// Controls
 	this.controls = {
         "q": moveTail.bind(this,0),
         "w": moveTail.bind(this,1),
         "e": moveTail.bind(this,2)
-	}
+	};
 }
 
 GuiToadHero.prototype = Object.create(Controller.prototype);

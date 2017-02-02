@@ -134,7 +134,7 @@ Scene.prototype.createEnemy = function(gameState){
 	var shroom = new Shroom(TOAD_MODEL.clone(TOAD_MODEL.name), gameState.ENEMIES);
 	//shroom.m == model 
 
-	shroom.m.id = TOAD_MODEL.name+(gameState.ENEMIES.length+1);
+	shroom.id = shroom.m.id = TOAD_MODEL.name+(gameState.ENEMIES.length+1);
 	// Our toad has not been killed yet !
 	shroom.killed = false;
 	// Set the shroom visible

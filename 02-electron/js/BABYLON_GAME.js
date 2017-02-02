@@ -44,14 +44,18 @@ BABYLON_GAME.prototype.animateScene = function(scene){
 		scene.render();
 
 		//move enemys 'backward' (toward player)
-		this.state.ENEMIES.forEach(function (shroom) {
+		this.state.ENEMIES.forEach(function (shroom, index) {
 			if (shroom.killed) {
 					shroom.kill();
+					this.state.ENEMIES.splice(index,1);
+					index -= 1;
 					this.state.score += 1;
 			} else {
 				if(shroom.m.position.z < -10)
 				{
 					shroom.kill();
+					this.state.ENEMIES.splice(index,1);
+					index -= 1;
 					this.state.score -= 1;
 				}
 				else
