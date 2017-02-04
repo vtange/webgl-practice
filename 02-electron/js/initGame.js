@@ -4,19 +4,20 @@
 document.addEventListener("DOMContentLoaded", function () {
 	var support = BABYLON.Engine.isSupported();
     if (support) {
-		var scene1Options = {
-			// Number of lanes
-			NO_OF_LANES: 3,
-			// Space between lanes
-			LANE_INTERVAL: 5,
-		}
+		var scene1Options = gameState.scenes[0];
 
 		//make basic scene, camera etc.
 		var game = new BABYLON_GAME(gameState);
 		var scene1 = new Scene(game.canvas, game.engine, scene1Options);
-		
+
 		game.loadScene(scene1);
-       	//game.start();
+
+		// Resize the babylon engine when the window is resized
+		window.addEventListener("resize", function () {
+			if (game) {
+				game.engine.resize();
+			}
+		},false);
     }
 	else
 	{

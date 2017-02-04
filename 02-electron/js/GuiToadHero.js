@@ -14,10 +14,39 @@ function GuiToadHero(){
         "w": moveTail.bind(this,1),
         "e": moveTail.bind(this,2)
 	};
+	this.scenes = [{
+			// Number of lanes
+			NO_OF_LANES: 3,
+			// Space between lanes
+			LANE_INTERVAL: 5,
+		}];
 }
 
 GuiToadHero.prototype = Object.create(Controller.prototype);
 GuiToadHero.prototype.constructor = GuiToadHero;
+GuiToadHero.prototype.renderLoopFn = function(){
+	this.ENEMIES.forEach(function (shroom, index) {
+			if (shroom.killed) {
+					shroom.kill();
+					this.ENEMIES.splice(index,1);
+					index -= 1;
+					this.score += 1;
+			} else {
+				if(shroom.m.position.z < -10)
+				{
+					shroom.kill();
+					this.ENEMIES.splice(index,1);
+					index -= 1;
+					this.score -= 1;
+				}
+				else
+				{
+					shroom.m.position.z -= 0.5;
+				}
+			}
+		}.bind(this));
+}
+
 
 var gameState = new GuiToadHero();
 
