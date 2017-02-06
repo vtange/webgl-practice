@@ -77,7 +77,7 @@ Scene.prototype.buildSkybox = function(){
     var skybox = BABYLON.Mesh.CreateSphere("skyBox", 100, 1000, this.self);
 
     // The sky creation
-    BABYLON.Engine.ShadersRepository = "shaders/";
+    BABYLON.Engine.ShadersRepository = "js/shaders/";
 
     var shader = new BABYLON.ShaderMaterial("gradient", this.self, "gradient", {});
     shader.setFloat("offset", 10);
