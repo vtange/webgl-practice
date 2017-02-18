@@ -1,12 +1,20 @@
 "use strict";
  
 document.addEventListener("DOMContentLoaded", startGame, false);
- 
+var mapImageController = {
+    applyMapImage:function(e)
+                    {
+                        var file = mapImageController.input.files[0];
+                        this.map = new BABYLON.Texture(file.name, this.scene);
+                    }
+}
+
 function startGame() {
     if (BABYLON.Engine.isSupported()) {
+        var mapInput = mapImageController.input = document.getElementById("mapInput");
         var canvas = document.getElementById("renderCanvas");
         var engine = new BABYLON.Engine(canvas, false);
-        var scene = new BABYLON.Scene(engine);
+        var scene = mapImageController.scene = new BABYLON.Scene(engine);
         var camera = new BABYLON.ArcRotateCamera("Camera", 0, Math.PI / 2, 10, BABYLON.Vector3.Zero(), scene);
         camera.attachControl(canvas);
 
@@ -18,7 +26,7 @@ function startGame() {
                 uniforms: ["world", "worldView", "worldViewProjection"]
             });//2nd object enables lighting to affect material
         
-        var globeTexture = new BABYLON.Texture("globe.png", scene);
+        var globeTexture = mapImageController.map = new BABYLON.Texture("globe.png", scene);
         //texture is upside down, multiply vUV in fragmentshader (glsl) by -1
         
         shaderMaterial.setTexture("textureSampler", globeTexture);
@@ -56,6 +64,9 @@ function initGui(sphere, scene) {
         this.explode = function() { ... };
         */
         this.latitude = 0;
+        this.loadFile = function(){
+             mapImageController.input.click()
+        }
     };
     var switchr = new Switcher();
     var gui = new dat.GUI();
@@ -75,6 +86,8 @@ function initGui(sphere, scene) {
     
     f1.add(switchr, 'latitude', 0, 30 ).name("Pole Latitude").step(5).onChange(function(){
     });
+    
+    //f1.add(switchr, 'loadFile').name('Load Map Image');
 
     f1.open();
 
