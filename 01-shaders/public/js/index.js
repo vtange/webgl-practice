@@ -21,7 +21,7 @@ function startGame() {
         BABYLON.Engine.ShadersRepository = "js/shaders/";
     
         // Compile
-        var shaderMaterial = new BABYLON.ShaderMaterial("directTexture", scene, "directTexture", {
+        var shaderMaterial = new BABYLON.ShaderMaterial("flat", scene, "flat", {
                 attributes: ["position", "normal", "uv"],
                 uniforms: ["world", "worldView", "worldViewProjection"]
             });//2nd object enables lighting to affect material
@@ -52,7 +52,7 @@ function startGame() {
 
 function initGui(sphere, scene) {
     function Switcher() {
-        this.shader = "cell_shading";
+        this.shader = "flat";
         /*
         //text
         this.message = 'dat.gui';
@@ -72,7 +72,7 @@ function initGui(sphere, scene) {
     var gui = new dat.GUI();
     var f1 = gui.addFolder('Shader');
 
-    f1.add(switchr, 'shader', { Cell: 'cell_shading', DirectTexture: 'directTexture', Gradient: 'gradient' } ).onChange(function(){
+    f1.add(switchr, 'shader', { Cell: 'cell_shading', Flat: 'flat', Gradient: 'gradient' } ).onChange(function(){
         var selection = this.object.shader;
         sphere.material = new BABYLON.ShaderMaterial(selection, scene, selection, {
                 attributes: ["position", "normal", "uv"],
