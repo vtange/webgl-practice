@@ -25,7 +25,7 @@ function startGame() {
                 attributes: ["position", "normal", "uv"],
                 uniforms: ["world", "worldView", "worldViewProjection"]
             });//2nd object enables lighting to affect material
-        
+
         var globeTexture = mapImageController.map = new BABYLON.Texture("globe.png", scene);
         //texture is upside down, multiply vUV in fragmentshader (glsl) by -1
         
@@ -38,9 +38,21 @@ function startGame() {
         shaderMaterial.setVector3("cameraPosition", BABYLON.Vector3.Zero());
         shaderMaterial.backFaceCulling = false; //visible from backside
 
+        var poles = new BABYLON.StandardMaterial("poles", scene);
+        poles.emissiveColor = new BABYLON.Color3(0.9, 0.9, 0.9);
+        var globe = new BABYLON.MultiMaterial("globe", scene);
+        globe.subMaterials.push(poles);
+        globe.subMaterials.push(shaderMaterial);
+        globe.subMaterials.push(poles);
+
         // Creating sphere
         var sphere = BABYLON.Mesh.CreateSphere("Sphere", 16, 6, scene);
-        sphere.material = shaderMaterial;
+        var verticesCount = sphere.getTotalVertices();
+        sphere.subMeshes = [];
+        sphere.subMeshes.push(new BABYLON.SubMesh(0, 0, verticesCount, 0, 864, sphere)); //total 3886-3888
+        sphere.subMeshes.push(new BABYLON.SubMesh(1, 0, verticesCount, 864, 2592, sphere));
+        sphere.subMeshes.push(new BABYLON.SubMesh(2, 0, verticesCount, 3456, 430, sphere));
+        sphere.material = globe;
  
         initGui(sphere, scene);
         engine.runRenderLoop(function () {
@@ -70,9 +82,7 @@ function initGui(sphere, scene) {
     };
     var switchr = new Switcher();
     var gui = new dat.GUI();
-    var f1 = gui.addFolder('Shader');
-
-    f1.add(switchr, 'shader', { Cell: 'cell_shading', Flat: 'flat', Gradient: 'gradient' } ).onChange(function(){
+    gui.add(switchr, 'shader', { Cell: 'cell_shading', Flat: 'flat', Gradient: 'gradient' } ).onChange(function(){
         var selection = this.object.shader;
         sphere.material = new BABYLON.ShaderMaterial(selection, scene, selection, {
                 attributes: ["position", "normal", "uv"],
@@ -80,9 +90,7 @@ function initGui(sphere, scene) {
             });//2nd object enables lighting to affect material
     });;
 
-    f1.open();
-
-    f1 = gui.addFolder('Todo');
+    var f1 = gui.addFolder('Todo');
     
     f1.add(switchr, 'latitude', 0, 30 ).name("Pole Latitude").step(5).onChange(function(){
     });
