@@ -18,7 +18,9 @@
   },
   "homepage": "",
   "dependencies": {
+    "browser-sync": "^2.18.8",
     "express": "^4.13.3",
+    "gulp": "^3.9.1",
     "mongoose": "^4.2.8"
   }
 }
