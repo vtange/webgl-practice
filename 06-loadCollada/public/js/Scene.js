@@ -25,20 +25,43 @@ Scene.prototype.getLighting = function(){
 
 Scene.prototype.loadMeshes = function(gameState)
 {
-    gameState.arrMeshList.forEach(function(mesh){
-        // Import Mesh Model to the scene
-        BABYLON.SceneLoader.ImportMesh(mesh.strName, mesh.strFolderName, mesh.strFilename, this.self, function (meshes) {
-			if(!meshes.length)
-			{
-				console.log("failed to load model: ", mesh.strName, mesh.strFolderName, mesh.strFilename);
-				return;
-			}
-            var model = meshes[0];
-            model.isVisible = false;
-            model.scaling = new BABYLON.Vector3(0.5,0.5,0.5);
-            gameState.MODELS[strName] = model;
+	var scene = this.self;
+    var meshLoadPromiseChain = gameState.arrMeshList.map(function(mesh){
+		return new Promise(function(resolve,fail){
+			// Import Mesh Model to the scene
+			BABYLON.SceneLoader.ImportMesh(mesh.strName, mesh.strFolderName, mesh.strFilename, scene, function (meshes) {
+				if(!meshes.length)
+				{
+					console.log("failed to load model: ", mesh.strName, mesh.strFolderName, mesh.strFilename);
+					fail();
+					return;
+				}
+				var model = meshes[0];
+				model.isVisible = false;
+				gameState.MODELS[mesh.strName] = model;
+				resolve(true);
+			});
         });
-    }.bind(this))
+    }.bind(this));
+	Promise.all(meshLoadPromiseChain).then(function(resolveArgs){
+		this.deployMeshes(gameState);
+	}.bind(this));
+};
+
+Scene.prototype.deployMeshes = function(gameState){
+
+	var HAU_MODEL = gameState.MODELS["mesh3"];
+
+	// Create a clone of our template
+	var hau = new Character(HAU_MODEL.clone(HAU_MODEL.name));
+	//hau.m == model 
+
+	hau.id = hau.m.id = HAU_MODEL.name+(gameState.chars.length+1);
+	hau.killed = false;
+	hau.m.isVisible = true;
+	hau.m.position = new BABYLON.Vector3(0, 0, 0);
+
+	gameState.chars.push(hau);
 };
 
 Scene.prototype.loadScenes = function(gameState)

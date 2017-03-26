@@ -6,4 +6,4 @@ function MeshConstruct(arr)
 }
 var meshList = [];
 
-meshList.push(new MeshConstruct(["hau","assets/","hau.babylon"]));
+meshList.push(new MeshConstruct(["mesh3","assets/","hau.babylon"]));

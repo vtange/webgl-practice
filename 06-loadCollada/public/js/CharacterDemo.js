@@ -6,6 +6,7 @@ function CharacterDemo(){
 	this.controls = {
 	};
 	this.scenes = [];
+	this.chars = [];
 }
 
 CharacterDemo.prototype = Object.create(Controller.prototype);

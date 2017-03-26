@@ -131,7 +131,7 @@ Scene.prototype.createEnemy = function(gameState){
 	var TOAD_MODEL = gameState.MODELS["red_toad"];
 
 	// Create a clone of our template
-	var shroom = new Shroom(TOAD_MODEL.clone(TOAD_MODEL.name), gameState.ENEMIES);
+	var shroom = new Shroom(TOAD_MODEL.clone(TOAD_MODEL.name));
 	//shroom.m == model 
 
 	shroom.id = shroom.m.id = TOAD_MODEL.name+(gameState.ENEMIES.length+1);
