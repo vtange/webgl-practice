@@ -29,7 +29,7 @@ Scene.prototype.loadMeshes = function(gameState)
     var meshLoadPromiseChain = gameState.arrMeshList.map(function(mesh){
 		return new Promise(function(resolve,fail){
 			// Import Mesh Model to the scene
-			BABYLON.SceneLoader.ImportMesh(mesh.strName, mesh.strFolderName, mesh.strFilename, scene, function (meshes) {
+			BABYLON.SceneLoader.ImportMesh("", mesh.strFolderName, mesh.strFilename, scene, function (meshes) {
 				if(!meshes.length)
 				{
 					console.log("failed to load model: ", mesh.strName, mesh.strFolderName, mesh.strFilename);
