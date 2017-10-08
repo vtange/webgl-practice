@@ -115,28 +115,28 @@ Scene.prototype.assembleGameAssets = function(gameState)
 
 Scene.prototype.buildSkybox = function(){
     // The box creation
-    var skybox = BABYLON.Mesh.CreateSphere("skyBox", 100, 1000, this.self);
+    //var skybox = BABYLON.Mesh.CreateSphere("skyBox", 100, 1000, this.self);
 
     // The sky creation
     BABYLON.Engine.ShadersRepository = "js/shaders/";
 
-    var shader = new BABYLON.ShaderMaterial("gradient", this.self, "gradient", {});
-    shader.setFloat("offset", 10);
-    shader.setColor3("topColor", BABYLON.Color3.FromInts(0,119,255));
-    shader.setColor3("bottomColor", BABYLON.Color3.FromInts(240,240, 255));
+    //var shader = new BABYLON.ShaderMaterial("gradient", this.self, "gradient", {});
+    //shader.setFloat("offset", 10);
+   // shader.setColor3("topColor", BABYLON.Color3.FromInts(0,119,255));
+    //shader.setColor3("bottomColor", BABYLON.Color3.FromInts(240,240, 255));
 
-    shader.backFaceCulling = false;
+    //shader.backFaceCulling = false;
 
     // box + sky = skybox !
-    skybox.material = shader;
+   // skybox.material = shader;
 
 	// clear and fog color
     // Update the scene background color
     this.self.clearColor=new BABYLON.Color3(0.8,0.8,0.8);
 
-    this.self.fogMode = BABYLON.Scene.FOGMODE_EXP2;
-    this.self.fogDensity = 0.003;
-    this.self.fogColor = new BABYLON.Color3(0.8,0.83,0.8);
+    //this.self.fogMode = BABYLON.Scene.FOGMODE_EXP2;
+    //this.self.fogDensity = 0.003;
+    //this.self.fogColor = new BABYLON.Color3(0.8,0.83,0.8);
 }
 
 
@@ -159,10 +159,10 @@ Scene.prototype.buildWorld = function(gameState){
     var worldMap = BABYLON.Mesh.CreateGroundFromHeightMap("terrain", "assets/heightMap.png", 100, 100, 100, 0, 10, this.self, false);
 	worldMap.position.y = 0;
 
-	var terrainMaterial = new BABYLON.TerrainMaterial("terrainMaterial", scene);
-	terrainMaterial.mixTexture = new BABYLON.Texture("mixMap.png", scene);
-	terrainMaterial.diffuseTexture1 = new BABYLON.Texture("assets/ground.jpg", scene);
-	terrainMaterial.diffuseTexture2 = new BABYLON.Texture("assets/ground.jpg", scene);
-	terrainMaterial.diffuseTexture3 = new BABYLON.Texture("assets/ground.jpg", scene);
+	var terrainMaterial = new BABYLON.TerrainMaterial("terrainMaterial", this.self);
+	terrainMaterial.mixTexture = new BABYLON.Texture("assets/mixmap.png", this.self);
+	terrainMaterial.diffuseTexture1 = new BABYLON.Texture("assets/grs1.jpg", this.self);
+	terrainMaterial.diffuseTexture2 = new BABYLON.Texture("assets/plains.jpg", this.self);
+	terrainMaterial.diffuseTexture3 = new BABYLON.Texture("assets/des3.jpg", this.self);
     worldMap.material = terrainMaterial;
 };
