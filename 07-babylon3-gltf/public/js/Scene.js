@@ -155,7 +155,7 @@ Scene.prototype.buildWorld = function(gameState){
     groundMaterial.specularColor = new BABYLON.Color3(0, 0, 0);
     // Ground
     var ground = BABYLON.Mesh.CreateGroundFromHeightMap("ground", "assets/heightMap.png", 100, 100, 100, 0, 10, this.self, false);
-    ground.position.y = -2.05;
+    ground.position.y = 0;
     ground.material = groundMaterial;
 
 };
