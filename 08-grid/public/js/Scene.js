@@ -13,6 +13,11 @@ function Scene(canvas, engine, options)
 	this.shadowGen = this.getLighting();
 }
 Scene.prototype.getCamera = function(){
+	/* fixed?
+	this.camera = new BABYLON.FreeCamera("camera", new BABYLON.Vector3(0,4,-10), this.self);
+	this.camera.setTarget(new BABYLON.Vector3(0,0,10));
+	this.camera.attachControl(canvas);
+	*/
 	// Camera attached to the canvas
     var camera = new BABYLON.ArcRotateCamera("Camera", 0.67,1.2, 150, BABYLON.Vector3.Zero(), this.self);
     camera.attachControl(this.canvas);
@@ -38,9 +43,10 @@ Scene.prototype.loadMeshes = function(gameState)
 					return;
 				}
 				console.log("got meshes");
-				var model = meshes[0];
-				model.isVisible = false;
-				gameState.MODELS[mesh.strName] = model;
+				meshes.forEach(function(mesh){
+					mesh.isVisible = false;
+				});
+				//gameState.MODELS[mesh.strName] = model;
 				resolve(true);
 			});
         });
@@ -51,7 +57,7 @@ Scene.prototype.loadMeshes = function(gameState)
 };
 
 Scene.prototype.deployMeshes = function(gameState){
-
+/*
 	var HAU_MODEL = gameState.MODELS["mesh3"];
 
 	// Create a clone of our template
@@ -64,23 +70,8 @@ Scene.prototype.deployMeshes = function(gameState){
 	hau.m.position = new BABYLON.Vector3(0, 0, 0);
 
 	gameState.chars.push(hau);
+	*/
 };
-
-Scene.prototype.loadScenes = function(gameState)
-{
-    gameState.arrMeshList.forEach(function(mesh){
-        // Import Mesh Model to the scene
-        BABYLON.SceneLoader.Load(mesh.strFolderName, mesh.strFilename, this.engine, function (scenes) {
-			if(!scenes.length)
-			{
-				console.log("failed to load scene: ", mesh.strName, mesh.strFolderName, mesh.strFilename);
-				return;
-			}
-			console.log(scenes);
-        });
-    }.bind(this))
-};
-
 
 Scene.prototype.createMaterial = function(blueprint)
 {
@@ -108,29 +99,26 @@ Scene.prototype.createMaterial = function(blueprint)
 
 Scene.prototype.assembleGameAssets = function(gameState)
 {
+    // The sky creation
+    BABYLON.Engine.ShadersRepository = "js/shaders/";
+	
 	this.loadMeshes(gameState);
-	//this.loadScenes(gameState);
 	this.buildWorld(gameState);
 };
 
 Scene.prototype.buildSkybox = function(){
     // The box creation
-    //var skybox = BABYLON.Mesh.CreateSphere("skyBox", 100, 1000, this.self);
-
-    // The sky creation
-    BABYLON.Engine.ShadersRepository = "js/shaders/";
-
+	//var skybox = BABYLON.Mesh.CreateSphere("skyBox", 100, 1000, this.self);
+	
     //var shader = new BABYLON.ShaderMaterial("gradient", this.self, "gradient", {});
     //shader.setFloat("offset", 10);
-   // shader.setColor3("topColor", BABYLON.Color3.FromInts(0,119,255));
+    //shader.setColor3("topColor", BABYLON.Color3.FromInts(0,119,255));
     //shader.setColor3("bottomColor", BABYLON.Color3.FromInts(240,240, 255));
-
     //shader.backFaceCulling = false;
 
     // box + sky = skybox !
    // skybox.material = shader;
 
-	// clear and fog color
     // Update the scene background color
     this.self.clearColor=new BABYLON.Color3(0.8,0.8,0.8);
 
@@ -148,21 +136,43 @@ Scene.prototype.buildWorld = function(gameState){
 	/*----------------
 	GROUND
 	----------------*/
-	/*
-    var groundMaterial = new BABYLON.StandardMaterial("ground", this.self);
-    groundMaterial.diffuseTexture = new BABYLON.Texture("assets/ground.jpg", this.self);
-    groundMaterial.diffuseTexture.uScale = 6;
-    groundMaterial.diffuseTexture.vScale = 6;
-	groundMaterial.specularColor = new BABYLON.Color3(0, 0, 0);
-	*/
-    // Ground
-    var worldMap = BABYLON.Mesh.CreateGroundFromHeightMap("terrain", "assets/heightMap.png", 100, 100, 100, 0, 10, this.self, false);
-	worldMap.position.y = 0;
+	//CreateGroundFromHeightMap( name, heightmap_url, mesh_size, width, height, subdivisioncount, scene, bUpdatable)
+	var worldMap = BABYLON.Mesh.CreateGroundFromHeightMap("terrain", "assets/heightMap.png", 150, 150, 150, 0, 10, this.self, false);
+	worldMap.position.x = 75;
+	worldMap.position.y = 3;
+	worldMap.position.z = 75;
 
 	var terrainMaterial = new BABYLON.TerrainMaterial("terrainMaterial", this.self);
 	terrainMaterial.mixTexture = new BABYLON.Texture("assets/mixmap.png", this.self);
 	terrainMaterial.diffuseTexture1 = new BABYLON.Texture("assets/grs1.jpg", this.self);
 	terrainMaterial.diffuseTexture2 = new BABYLON.Texture("assets/plains.jpg", this.self);
 	terrainMaterial.diffuseTexture3 = new BABYLON.Texture("assets/des3.jpg", this.self);
-    worldMap.material = terrainMaterial;
+	worldMap.material = terrainMaterial;
+	
+	/*----------------
+	LANES
+	----------------*/
+	gameState.MAP = [];
+	for (var i = 0; i < 30; i++){
+		for (var j = 0; j < 30; j++){
+		var cellTexture = {
+			name: "oneCell",
+			img: null,
+			color: {
+				r:Math.random().toFixed(1),
+				g:Math.random().toFixed(1),
+				b:Math.random().toFixed(1)
+			}
+		}
+		if(i===0 && j===0)
+		{
+			cellTexture.color = {r:1,g:1,b:1};
+		}
+		var cellTexture = this.createMaterial(cellTexture, this.self); //red mat
+
+		if(!gameState.MAP[i]) gameState.MAP[i] = [];
+		gameState.MAP[i][j] = new Cell(i,j);
+		gameState.MAP[i][j].create(cellTexture, this.self);
+		}
+	}
 };
