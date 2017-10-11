@@ -152,9 +152,11 @@ Scene.prototype.buildWorld = function(gameState){
 	/*----------------
 	LANES
 	----------------*/
+	var mapDims = [100,50];
+	var idCount = 0;
 	gameState.MAP = [];
-	for (var i = 0; i < 30; i++){
-		for (var j = 0; j < 30; j++){
+	for (var i = 0; i < mapDims[0]; i++){
+		for (var j = 0; j < mapDims[1]; j++){
 		var cellTexture = {
 			name: "oneCell",
 			img: null,
@@ -171,8 +173,9 @@ Scene.prototype.buildWorld = function(gameState){
 		var cellTexture = this.createMaterial(cellTexture, this.self); //red mat
 
 		if(!gameState.MAP[i]) gameState.MAP[i] = [];
-		gameState.MAP[i][j] = new Cell(i,j);
+		gameState.MAP[i][j] = new Cell(i,j,idCount);
 		gameState.MAP[i][j].create(cellTexture, this.self);
+		idCount++;
 		}
 	}
 };

@@ -1,4 +1,6 @@
-function Cell(x,y){
+function Cell(x,y,id){
+    this.id = id;
+    this.size = 5;
     this.x = x;
     this.y = y;
     //0-sea 1-tundra 2-plain 3-grass 4-desert 5-snow
@@ -9,12 +11,11 @@ function Cell(x,y){
 }
 
 Cell.prototype.create = function(material, scene) {
-    var id = this.x + (this.y*30); //y * x row length
     //CreateGround - 5 params: name, width, height, subdivisions and scene
-	var mesh = BABYLON.Mesh.CreateGround(id, 5, 5, 1, scene);
-	mesh.position.x = (this.x * 5)+2.5;
+	var mesh = BABYLON.Mesh.CreateGround(this.id, this.size, this.size, 1, scene);
+	mesh.position.x = (this.x * this.size) + this.size/2;
 	mesh.position.y = 1;// 0 is ground, we want mouse hoverable
-	mesh.position.z = (this.y * 5)+2.5;
+	mesh.position.z = (this.y * this.size) + this.size/2;
 	mesh.material = material;
 	return mesh;
 }
