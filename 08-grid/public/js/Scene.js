@@ -13,14 +13,27 @@ function Scene(canvas, engine, options)
 	this.shadowGen = this.getLighting();
 }
 Scene.prototype.getCamera = function(){
-	/* fixed?
-	this.camera = new BABYLON.FreeCamera("camera", new BABYLON.Vector3(0,4,-10), this.self);
-	this.camera.setTarget(new BABYLON.Vector3(0,0,10));
-	this.camera.attachControl(canvas);
-	*/
 	// Camera attached to the canvas
-    var camera = new BABYLON.ArcRotateCamera("Camera", 0.67,1.2, 150, BABYLON.Vector3.Zero(), this.self);
-    camera.attachControl(this.canvas);
+    var camera = new BABYLON.FreeCamera("Camera", new BABYLON.Vector3(75, 50, 0), this.self);
+	//var camera = new BABYLON.ArcRotateCamera("Camera", 0, 1, 150, new BABYLON.Vector3(75, 5, 75), this.self);
+	camera.setTarget(new BABYLON.Vector3(75,0,75)); // the viewing angle for Free Camera
+	camera.inputs.clear();  // Remove all previous inputs
+	camera.inputs.add( new MyArcRotateCameraPointersInput() ); // Add the new custom input
+
+	// Activate collisions
+	camera.checkCollisions = true;
+
+    // This attaches the camera to the canvas
+    camera.attachControl(this.canvas, true);
+
+	// Disable the right click context menu
+	//window.addEventListener("contextmenu", function (evt){	evt.preventDefault();});
+
+
+
+
+	//camera.angularSensibility = 999999999999;
+	console.log(camera);
 	return camera;
 };
 Scene.prototype.getLighting = function(){
@@ -152,30 +165,28 @@ Scene.prototype.buildWorld = function(gameState){
 	/*----------------
 	LANES
 	----------------*/
+	/*
 	var mapDims = [100,50];
 	var idCount = 0;
+	var cellColor = {
+		name: "oneCell",
+		img: null,
+		color: {
+			r:Math.random().toFixed(1),
+			g:Math.random().toFixed(1),
+			b:Math.random().toFixed(1)
+		}
+	}
+	var cellTexture = this.createMaterial(cellColor, this.self); //red mat
 	gameState.MAP = [];
 	for (var i = 0; i < mapDims[0]; i++){
 		for (var j = 0; j < mapDims[1]; j++){
-		var cellTexture = {
-			name: "oneCell",
-			img: null,
-			color: {
-				r:Math.random().toFixed(1),
-				g:Math.random().toFixed(1),
-				b:Math.random().toFixed(1)
-			}
-		}
-		if(i===0 && j===0)
-		{
-			cellTexture.color = {r:1,g:1,b:1};
-		}
-		var cellTexture = this.createMaterial(cellTexture, this.self); //red mat
+
 
 		if(!gameState.MAP[i]) gameState.MAP[i] = [];
 		gameState.MAP[i][j] = new Cell(i,j,idCount);
 		gameState.MAP[i][j].create(cellTexture, this.self);
 		idCount++;
 		}
-	}
+	}*/
 };
