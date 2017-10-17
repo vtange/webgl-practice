@@ -14,9 +14,9 @@ function Scene(canvas, engine, options)
 }
 Scene.prototype.getCamera = function(){
 	// Camera attached to the canvas
-    var camera = new BABYLON.FreeCamera("Camera", new BABYLON.Vector3(75, 50, 0), this.self);
-	//var camera = new BABYLON.ArcRotateCamera("Camera", 0, 1, 150, new BABYLON.Vector3(75, 5, 75), this.self);
-	camera.setTarget(new BABYLON.Vector3(75,0,75)); // the viewing angle for Free Camera
+    //var camera = new BABYLON.FreeCamera("Camera", new BABYLON.Vector3(75, 50, 0), this.self);
+	var camera = new BABYLON.ArcRotateCamera("Camera", 0, 1, 150, new BABYLON.Vector3(75, 5, 75), this.self);
+	//camera.setTarget(new BABYLON.Vector3(75,0,75)); // the viewing angle for Free Camera
 	camera.inputs.clear();  // Remove all previous inputs
 	camera.inputs.add( new MyArcRotateCameraPointersInput() ); // Add the new custom input
 

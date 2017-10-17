@@ -18,6 +18,8 @@ MyArcRotateCameraPointersInput.prototype.attachControl = function (element, noPr
 	var pointA, pointB;
 	var previousPinchDistance = 0;
 
+	this.camera.panningAxis = {x: 1, y: 0, z: 1};
+
 	// mouse wheel input
 	this._wheel = function (p, s) {
 		//sanity check - this should be a PointerWheel event.
@@ -86,18 +88,13 @@ MyArcRotateCameraPointersInput.prototype.attachControl = function (element, noPr
 			if (!noPreventDefault) {
 				evt.preventDefault();
 			}
-			console.log(evt.movementX);
-			engine.cursor.style.top = evt.clientY+"px";
-			engine.cursor.style.left = evt.clientX+"px";
 			// One button down
-			if (pointA && pointB === undefined) {
+			if (pointA && (pointB === undefined)) {
 				
 				// invoke panning when pan click button is pressed
 				if (_this.panningSensibility !== 0 && _this._isPanClick) {	
-					_this.camera
-						.inertialPanningX += -(evt.clientX - cacheSoloPointer.x) / _this.panningSensibility;
-					_this.camera
-						.inertialPanningY += (evt.clientY - cacheSoloPointer.y) / _this.panningSensibility;
+					_this.camera.inertialPanningX += -(evt.clientX - cacheSoloPointer.x) / _this.panningSensibility;
+					_this.camera.inertialPanningY += (evt.clientY - cacheSoloPointer.y) / _this.panningSensibility;
 				}
 				else {
 
@@ -107,7 +104,7 @@ MyArcRotateCameraPointersInput.prototype.attachControl = function (element, noPr
 				cacheSoloPointer.y = evt.clientY;
 			}
 			else if (pointA && pointB) {
-				/*
+				/* for touch screen
 				if(  evt.buttons == 6 ) // middle + right
 				{
 					var offsetX = evt.clientX - cacheSoloPointer.x;
@@ -142,12 +139,14 @@ MyArcRotateCameraPointersInput.prototype.attachControl = function (element, noPr
 	};
 	this._observer += this.camera.getScene().onPointerObservable.add(this._pointerInput, BABYLON.PointerEventTypes.POINTERDOWN | BABYLON.PointerEventTypes.POINTERUP | BABYLON.PointerEventTypes.POINTERMOVE);
 
+	/*
 	this._onContextMenu = function (evt) {
 		evt.preventDefault();
 	};
 	if (!this.camera._useCtrlForPanning) {
 		element.addEventListener("contextmenu", this._onContextMenu, false);
-	}
+	}*/
+
 	this._onLostFocus = function () {
 		//this._keys = [];
 		pointA = pointB = undefined;

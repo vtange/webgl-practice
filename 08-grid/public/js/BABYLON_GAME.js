@@ -5,7 +5,7 @@ function BABYLON_GAME(stateObj){
 	// Create babylon engine (responsible for drawing the game scene on the canvas)
 	this.engine = new BABYLON.Engine(this.canvas, true);
 
-
+/*
 	this.engine.cursor = document.getElementById("custom_cursor");
 
 		//lock mouse in canvas
@@ -27,7 +27,7 @@ function BABYLON_GAME(stateObj){
 				this.engine.cursor.updatePos();
 			  }.bind(this));
 		}.bind(this);
-
+*/
 
 	// State (where we put stuff like players, enemies, game-unique elements)
 	this.state = stateObj;
