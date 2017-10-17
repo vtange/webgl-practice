@@ -18,7 +18,9 @@ MyArcRotateCameraPointersInput.prototype.attachControl = function (element, noPr
 	var pointA, pointB;
 	var previousPinchDistance = 0;
 
+	//pan along x and z, not y
 	this.camera.panningAxis = {x: 1, y: 0, z: 1};
+	this.camera.lowerRadiusLimit = 10;
 
 	// mouse wheel input
 	this._wheel = function (p, s) {
