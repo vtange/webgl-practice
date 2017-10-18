@@ -2,6 +2,7 @@ function Scene(canvas, engine, options)
 {
 	// Create scene (contains our game elements and models) 
 	this.self = new BABYLON.Scene(engine);
+	this.self.checkCollisions = true;
 	this.options = options;
 	this.engine = engine;
 	this.canvas = canvas;
@@ -15,13 +16,25 @@ function Scene(canvas, engine, options)
 Scene.prototype.getCamera = function(){
 	// Camera attached to the canvas
     //var camera = new BABYLON.FreeCamera("Camera", new BABYLON.Vector3(75, 50, 0), this.self);
-	var camera = new BABYLON.ArcRotateCamera("Camera", 0, 1, 150, new BABYLON.Vector3(75, 5, 75), this.self);
+	var camera = new BABYLON.ArcRotateCamera("Camera", 0, 0.8, 150, new BABYLON.Vector3(75, 5, 75), this.self);
 	//camera.setTarget(new BABYLON.Vector3(75,0,75)); // the viewing angle for Free Camera
 	camera.inputs.clear();  // Remove all previous inputs
 	camera.inputs.add( new MyArcRotateCameraPointersInput() ); // Add the new custom input
 
+	//pan along x and z, not y
+	camera.panningAxis = {x: 1, y: 0, z: 1};
+	//prevent any rotation
+	camera.lowerAlphaLimit = -0.00005;
+	camera.upperAlphaLimit = 0.00005;
+	camera.lowerBetaLimit = 0.79995;
+	camera.upperBetaLimit = 0.80005;
+	//zoom limits
+	camera.lowerRadiusLimit = 10;
+	camera.upperRadiusLimit = 200;
+
 	// Activate collisions
-	camera.checkCollisions = true;
+	//camera.checkCollisions = true;
+	//camera.collisionRadius = new BABYLON.Vector3(100, 5, 100);
 
     // This attaches the camera to the canvas
     camera.attachControl(this.canvas, true);
@@ -29,11 +42,6 @@ Scene.prototype.getCamera = function(){
 	// Disable the right click context menu
 	//window.addEventListener("contextmenu", function (evt){	evt.preventDefault();});
 
-
-
-
-	//camera.angularSensibility = 999999999999;
-	console.log(camera);
 	return camera;
 };
 Scene.prototype.getLighting = function(){
@@ -162,6 +170,27 @@ Scene.prototype.buildWorld = function(gameState){
 	terrainMaterial.diffuseTexture3 = new BABYLON.Texture("assets/des3.jpg", this.self);
 	worldMap.material = terrainMaterial;
 	
+	/*----------------
+	NORTH, SOUTH WALL FOR CAMERA
+	----------------*/
+	var cellColor = {
+		name: "oneCell",
+		img: null,
+		color: {
+			r:Math.random().toFixed(1),
+			g:Math.random().toFixed(1),
+			b:Math.random().toFixed(1)
+		}
+	}
+	var cellTexture = this.createMaterial(cellColor, this.self); //red mat
+	var plane = BABYLON.Mesh.CreatePlane("plane", 300.0, this.self, false, BABYLON.Mesh.DOUBLESIDE );
+	plane.position.x = 0;
+	plane.position.y = 0;
+	plane.position.z = 75;
+	plane.rotation.y = (Math.PI/2);
+	plane.material = cellTexture;
+	plane.checkCollisions = true;
+
 	/*----------------
 	LANES
 	----------------*/

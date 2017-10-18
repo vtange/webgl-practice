@@ -18,10 +18,6 @@ MyArcRotateCameraPointersInput.prototype.attachControl = function (element, noPr
 	var pointA, pointB;
 	var previousPinchDistance = 0;
 
-	//pan along x and z, not y
-	this.camera.panningAxis = {x: 1, y: 0, z: 1};
-	this.camera.lowerRadiusLimit = 10;
-
 	// mouse wheel input
 	this._wheel = function (p, s) {
 		//sanity check - this should be a PointerWheel event.
@@ -94,13 +90,23 @@ MyArcRotateCameraPointersInput.prototype.attachControl = function (element, noPr
 			if (pointA && (pointB === undefined)) {
 				
 				// invoke panning when pan click button is pressed
-				if (_this.panningSensibility !== 0 && _this._isPanClick) {	
+				if (_this.panningSensibility !== 0 && _this._isPanClick) {
 					_this.camera.inertialPanningX += -(evt.clientX - cacheSoloPointer.x) / _this.panningSensibility;
-					_this.camera.inertialPanningY += (evt.clientY - cacheSoloPointer.y) / _this.panningSensibility;
+					if(_this.camera.position.x < 150)
+					{
+						_this.camera.inertialPanningY += Math.min(-0.0001, (evt.clientY - cacheSoloPointer.y) / _this.panningSensibility);
+					}
+					else if (_this.camera.position.x > 300)
+					{
+						_this.camera.inertialPanningY += Math.max(0.0001, (evt.clientY - cacheSoloPointer.y) / _this.panningSensibility);
+					}
+					else
+					{
+						_this.camera.inertialPanningY += (evt.clientY - cacheSoloPointer.y) / _this.panningSensibility;
+					}
 				}
 				else {
-
-//							alert( "un-handled event: " + evt.buttons)
+//					alert( "un-handled event: " + evt.buttons)
 				}
 				cacheSoloPointer.x = evt.clientX;
 				cacheSoloPointer.y = evt.clientY;
@@ -199,7 +205,7 @@ MyArcRotateCameraPointersInput.prototype.detachControl = function (element) {
 	if (element && this._observer) {
 		this.camera.getScene().onPointerObservable.remove(this._observer);
 		this._observer = null;
-		element.removeEventListener("contextmenu", this._onContextMenu);
+		//element.removeEventListener("contextmenu", this._onContextMenu);
 		element.removeEventListener("mousemove", this._onMouseMove);
 		element.removeEventListener("MSPointerDown", this._onGestureStart);
 		element.removeEventListener("MSGestureChange", this._onGesture);
@@ -214,7 +220,7 @@ MyArcRotateCameraPointersInput.prototype.detachControl = function (element) {
 		this._onGesture = null;
 		this._MSGestureHandler = null;
 		this._onLostFocus = null;
-		this._onContextMenu = null;
+		//this._onContextMenu = null;
 	}
 	BABYLON.Tools.UnregisterTopRootEvents([
 		{ name: "blur", handler: this._onLostFocus }
