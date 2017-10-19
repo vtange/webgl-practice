@@ -40,19 +40,20 @@ BABYLON_GAME.prototype.loadScene = function(sceneObj) {
 
 	this.addControls();
 	
-	this.animateScene(sceneObj.self);
+	this.animateScene(sceneObj);
 }
 
 BABYLON_GAME.prototype.addControls = function(){
 	window.addEventListener("keydown", this.state.handleKeyboardInput.bind(this.state));
 }
 
-BABYLON_GAME.prototype.animateScene = function(scene){
+BABYLON_GAME.prototype.animateScene = function(sceneObj){
 	/**
 	* Render the scene. This runs every frame.
 	*/
 	this.engine.runRenderLoop(function () {
-		scene.render();
+		//render scene (MUST)
+		sceneObj.self.render();
 
 		//move enemys 'backward' (toward player)
 		this.state.renderLoopFn();

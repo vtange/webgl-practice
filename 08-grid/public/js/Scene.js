@@ -1,15 +1,24 @@
 function Scene(canvas, engine, options)
 {
+	var _this = this;
 	// Create scene (contains our game elements and models) 
 	this.self = new BABYLON.Scene(engine);
-	this.self.checkCollisions = true;
+	//this.self.checkCollisions = true;
 	this.options = options;
 	this.engine = engine;
 	this.canvas = canvas;
 
 	// Create the camera
 	this.camera = this.getCamera();
-
+	this.self.beforeCameraRender = function(){
+		//camera boundaries
+		if(_this.camera.position.x < 100)
+		{
+			_this.camera.setPosition(new BABYLON.Vector3(101, _this.camera.position.y, _this.camera.position.z))
+			_this.camera.inertialPanningY = 0;
+		}
+	}
+	
 	// Create light
 	this.shadowGen = this.getLighting();
 }
@@ -31,11 +40,7 @@ Scene.prototype.getCamera = function(){
 	//zoom limits
 	camera.lowerRadiusLimit = 10;
 	camera.upperRadiusLimit = 200;
-
-	// Activate collisions
-	//camera.checkCollisions = true;
-	//camera.collisionRadius = new BABYLON.Vector3(100, 5, 100);
-
+	
     // This attaches the camera to the canvas
     camera.attachControl(this.canvas, true);
 
@@ -46,7 +51,8 @@ Scene.prototype.getCamera = function(){
 };
 Scene.prototype.getLighting = function(){
 
-    var sun = new BABYLON.PointLight("Omni0", new BABYLON.Vector3(60, 100, 10), this.self);
+	var sun = new BABYLON.DirectionalLight("Omni0", new BABYLON.Vector3(0, -1, 0), this.self);
+	sun.diffuse = new BABYLON.Color3(0.9, 1, 1);
 };
 
 Scene.prototype.loadMeshes = function(gameState)
@@ -173,6 +179,7 @@ Scene.prototype.buildWorld = function(gameState){
 	/*----------------
 	NORTH, SOUTH WALL FOR CAMERA
 	----------------*/
+	/*
 	var cellColor = {
 		name: "oneCell",
 		img: null,
@@ -190,7 +197,7 @@ Scene.prototype.buildWorld = function(gameState){
 	plane.rotation.y = (Math.PI/2);
 	plane.material = cellTexture;
 	plane.checkCollisions = true;
-
+	*/
 	/*----------------
 	LANES
 	----------------*/
