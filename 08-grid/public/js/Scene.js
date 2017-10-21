@@ -12,6 +12,9 @@ function Scene(canvas, engine, options)
 	this.camera = this.getCamera();
 	this.self.beforeCameraRender = function(){
 		//camera boundaries
+		//rad 150 -> 10 == x 183 -> 83
+
+		console.log(_this.camera.position.x, _this.camera.radius);
 		if(_this.camera.position.x < 100)
 		{
 			_this.camera.setPosition(new BABYLON.Vector3(101, _this.camera.position.y, _this.camera.position.z))
@@ -126,7 +129,6 @@ Scene.prototype.createMaterial = function(blueprint)
 
 Scene.prototype.assembleGameAssets = function(gameState)
 {
-    // The sky creation
     BABYLON.Engine.ShadersRepository = "js/shaders/";
 	
 	this.loadMeshes(gameState);
@@ -134,24 +136,7 @@ Scene.prototype.assembleGameAssets = function(gameState)
 };
 
 Scene.prototype.buildSkybox = function(){
-    // The box creation
-	//var skybox = BABYLON.Mesh.CreateSphere("skyBox", 100, 1000, this.self);
-	
-    //var shader = new BABYLON.ShaderMaterial("gradient", this.self, "gradient", {});
-    //shader.setFloat("offset", 10);
-    //shader.setColor3("topColor", BABYLON.Color3.FromInts(0,119,255));
-    //shader.setColor3("bottomColor", BABYLON.Color3.FromInts(240,240, 255));
-    //shader.backFaceCulling = false;
-
-    // box + sky = skybox !
-   // skybox.material = shader;
-
-    // Update the scene background color
     this.self.clearColor=new BABYLON.Color3(0.8,0.8,0.8);
-
-    //this.self.fogMode = BABYLON.Scene.FOGMODE_EXP2;
-    //this.self.fogDensity = 0.003;
-    //this.self.fogColor = new BABYLON.Color3(0.8,0.83,0.8);
 }
 
 
