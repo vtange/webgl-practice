@@ -1,0 +1,3 @@
+use babylon 3
+load gltf room
+lighting affects room
