@@ -6,24 +6,29 @@ function Scene(canvas, engine, options)
 	this.engine = engine;
 	this.canvas = canvas;
 	this.spriteManagerPlayer = new BABYLON.SpriteManager("playerManagr","assets/Player.png", 2, 64, this.self);
-		//deploy sprites
-		var player = new BABYLON.Sprite("player", this.spriteManagerPlayer);
-		player.width = 8;
-		player.height = 8;
-		player.position.x = -55;
-		player.position.z = -55;
-		player.position.y = player.height/2;
-		player.playAnimation(0, 43, true, 100);
+
 	// Create the camera
 	this.camera = this.getCamera();
+	this.self.activeCamera = this.camera;
 
 	// Create light
 	this.shadowGen = this.getLighting();
 }
 Scene.prototype.getCamera = function(){
-	// Camera attached to the canvas
-    var camera = new BABYLON.ArcRotateCamera("Camera", 0.67,1.2, 150, BABYLON.Vector3.Zero(), this.self);
-    camera.attachControl(this.canvas);
+
+	this.playerMesh = BABYLON.Mesh.CreateSphere("sphere1", 16, 2, this.self);
+	this.playerMesh.position.x = -55;
+	this.playerMesh.position.y = 1;
+	this.playerMesh.position.z = -55;
+	
+	var camera = new BABYLON.FollowCamera("FollowCam", new BABYLON.Vector3(55, 55, 55), this.self);
+	camera.radius = 70; // how far from the object to follow
+	camera.heightOffset = 50; // how high above the object to place the camera
+	camera.rotationOffset = 25; // the viewing angle
+	camera.cameraAcceleration = 0.05 // how fast to move
+	camera.maxCameraSpeed = 20 // speed limit
+	camera.lockedTarget = this.playerMesh; // target any mesh or object with a "position" Vector3
+
 	return camera;
 };
 Scene.prototype.getLighting = function(){
@@ -58,17 +63,15 @@ Scene.prototype.loadMeshes = function(gameState)
 	Promise.all(meshLoadPromiseChain).then(function(resolveArgs){
 		console.log("got meshes");
 
-/*
-
 		//deploy sprites
 		var player = new BABYLON.Sprite("player", this.spriteManagerPlayer);
-		player.position.x = 73;
-		player.position.z = 73;
-		player.width = 3;
-		player.height = 4;
+		player.width = 8;
+		player.height = 8;
+		player.position.x = -55;
+		player.position.z = -55;
+		player.position.y = player.height/2;
 		player.playAnimation(0, 43, true, 100);
-*/
-
+		player.parent = this.playerMesh;
 	}.bind(this));
 };
 
