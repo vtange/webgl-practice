@@ -5,7 +5,15 @@ function Scene(canvas, engine, options)
 	this.options = options;
 	this.engine = engine;
 	this.canvas = canvas;
-
+	this.spriteManagerPlayer = new BABYLON.SpriteManager("playerManagr","assets/Player.png", 2, 64, this.self);
+		//deploy sprites
+		var player = new BABYLON.Sprite("player", this.spriteManagerPlayer);
+		player.width = 8;
+		player.height = 8;
+		player.position.x = -55;
+		player.position.z = -55;
+		player.position.y = player.height/2;
+		player.playAnimation(0, 43, true, 100);
 	// Create the camera
 	this.camera = this.getCamera();
 
@@ -39,12 +47,28 @@ Scene.prototype.loadMeshes = function(gameState)
 					return;
 				}
 				console.log("got mesh");
+				meshes.forEach(function(m){
+					if(!mesh.isGround) m.isVisible = false;
+				});
+				//hide all models other than ground, deploy as needed
 				resolve(true);
 			});
         });
     }.bind(this));
 	Promise.all(meshLoadPromiseChain).then(function(resolveArgs){
 		console.log("got meshes");
+
+/*
+
+		//deploy sprites
+		var player = new BABYLON.Sprite("player", this.spriteManagerPlayer);
+		player.position.x = 73;
+		player.position.z = 73;
+		player.width = 3;
+		player.height = 4;
+		player.playAnimation(0, 43, true, 100);
+*/
+
 	}.bind(this));
 };
 

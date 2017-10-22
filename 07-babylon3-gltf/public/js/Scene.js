@@ -20,7 +20,8 @@ Scene.prototype.getCamera = function(){
 };
 Scene.prototype.getLighting = function(){
 
-    var sun = new BABYLON.PointLight("Omni0", new BABYLON.Vector3(60, 100, 10), this.self);
+	var sun = new BABYLON.DirectionalLight("Omni0", new BABYLON.Vector3(0, -1, 0), this.self);
+	sun.diffuse = new BABYLON.Color3(0.9, 1, 1);
 };
 
 Scene.prototype.loadMeshes = function(gameState)
@@ -38,9 +39,11 @@ Scene.prototype.loadMeshes = function(gameState)
 					return;
 				}
 				console.log("got meshes");
-				var model = meshes[0];
-				model.isVisible = false;
-				gameState.MODELS[mesh.strName] = model;
+				/*
+				meshes.forEach(function(mesh){
+					mesh.isVisible = false;
+				});*/
+				gameState.MODELS[mesh.strName] = meshes;
 				resolve(true);
 			});
         });
@@ -108,35 +111,13 @@ Scene.prototype.createMaterial = function(blueprint)
 
 Scene.prototype.assembleGameAssets = function(gameState)
 {
+    BABYLON.Engine.ShadersRepository = "js/shaders/";
 	this.loadMeshes(gameState);
-	//this.loadScenes(gameState);
 	this.buildWorld(gameState);
 };
 
 Scene.prototype.buildSkybox = function(){
-    // The box creation
-    var skybox = BABYLON.Mesh.CreateSphere("skyBox", 100, 1000, this.self);
-
-    // The sky creation
-    BABYLON.Engine.ShadersRepository = "js/shaders/";
-
-    var shader = new BABYLON.ShaderMaterial("gradient", this.self, "gradient", {});
-    shader.setFloat("offset", 10);
-    shader.setColor3("topColor", BABYLON.Color3.FromInts(0,119,255));
-    shader.setColor3("bottomColor", BABYLON.Color3.FromInts(240,240, 255));
-
-    shader.backFaceCulling = false;
-
-    // box + sky = skybox !
-    skybox.material = shader;
-
-	// clear and fog color
-    // Update the scene background color
     this.self.clearColor=new BABYLON.Color3(0.8,0.8,0.8);
-
-    this.self.fogMode = BABYLON.Scene.FOGMODE_EXP2;
-    this.self.fogDensity = 0.003;
-    this.self.fogColor = new BABYLON.Color3(0.8,0.83,0.8);
 }
 
 
