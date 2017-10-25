@@ -92,11 +92,13 @@ MyArcRotateCameraPointersInput.prototype.attachControl = function (element, noPr
 				// invoke panning when pan click button is pressed
 				if (_this.panningSensibility !== 0 && _this._isPanClick) {
 					_this.camera.inertialPanningX += -(evt.clientX - cacheSoloPointer.x) / _this.panningSensibility;
-					if(_this.camera.position.x < 150)
+					_this.camera.inertialPanningY += (evt.clientY - cacheSoloPointer.y) / _this.panningSensibility;
+					/*
+					if(_this.camera.position.x < _this.camera.getMinX())
 					{
 						_this.camera.inertialPanningY += Math.min(-0.0001, (evt.clientY - cacheSoloPointer.y) / _this.panningSensibility);
 					}
-					else if (_this.camera.position.x > 300)
+					else if (_this.camera.position.x > _this.camera.getMaxX())
 					{
 						_this.camera.inertialPanningY += Math.max(0.0001, (evt.clientY - cacheSoloPointer.y) / _this.panningSensibility);
 					}
@@ -104,6 +106,7 @@ MyArcRotateCameraPointersInput.prototype.attachControl = function (element, noPr
 					{
 						_this.camera.inertialPanningY += (evt.clientY - cacheSoloPointer.y) / _this.panningSensibility;
 					}
+					*/
 				}
 				else {
 //					alert( "un-handled event: " + evt.buttons)

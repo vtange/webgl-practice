@@ -10,15 +10,26 @@ function Scene(canvas, engine, options)
 
 	// Create the camera
 	this.camera = this.getCamera();
+	this.camera.getMinX = function(){
+		return ((this.camera.radius * 100) / 140)+12;
+	}.bind(this);
+	this.camera.getMaxX = function(){
+		return ((this.camera.radius * 100) / 140)+150;
+	}.bind(this);
 	this.self.beforeCameraRender = function(){
-		//camera boundaries
-		//rad 150 -> 10 == x 183 -> 83
-
-		console.log(_this.camera.position.x, _this.camera.radius);
-		if(_this.camera.position.x < 100)
+		if(_this.camera.position.x < _this.camera.getMinX())
 		{
-			_this.camera.setPosition(new BABYLON.Vector3(101, _this.camera.position.y, _this.camera.position.z))
-			_this.camera.inertialPanningY = 0;
+			if(_this.camera.inertialPanningY > 0)
+			{
+				_this.camera.inertialPanningY = 0;
+			}
+		}
+		else if(_this.camera.position.x > _this.camera.getMaxX())
+		{
+			if(_this.camera.inertialPanningY < 0)
+			{
+				_this.camera.inertialPanningY = 0;
+			}
 		}
 	}
 	
