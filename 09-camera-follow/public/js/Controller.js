@@ -3,10 +3,11 @@ function Controller()
 }
 
 Controller.prototype.handleKeyboardInput = function(evt){
-    var letter = String.fromCharCode(evt.keyCode);
-    letter = letter.toLowerCase();
     //run
-    if(this.controls && letter)
-        return this.controls[letter]();
+    if(typeof this.controls[evt.code] == "function")
+        return this.controls[evt.code]();
+    else{
+        console.log(evt.code);
+    }
 }
 

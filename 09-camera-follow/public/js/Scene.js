@@ -1,10 +1,10 @@
-function Scene(canvas, engine, options)
+function Scene(game, options)
 {
 	// Create scene (contains our game elements and models) 
-	this.self = new BABYLON.Scene(engine);
+	this.self = new BABYLON.Scene(game.engine);
 	this.options = options;
-	this.engine = engine;
-	this.canvas = canvas;
+	this.engine = game.engine;
+	this.canvas = game.canvas;
 	this.spriteManagerPlayer = new BABYLON.SpriteManager("playerManagr","assets/Player.png", 2, 64, this.self);
 
 	// Create the camera
@@ -68,10 +68,11 @@ Scene.prototype.loadMeshes = function(gameState)
 		player.width = 8;
 		player.height = 8;
 		player.position.x = -55;
-		player.position.z = -55;
 		player.position.y = player.height/2;
+		player.position.z = -55;
 		player.playAnimation(0, 43, true, 100);
-		player.parent = this.playerMesh;
+		player.parent = this.playerMesh; //does not work
+		this.playerMesh.sprite = player;
 	}.bind(this));
 };
 

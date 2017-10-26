@@ -6,10 +6,11 @@ document.addEventListener("DOMContentLoaded", function () {
     if (support) {
 
 		//make basic scene, camera etc.
+		var gameState = new CharacterDemo();
 		var game = new BABYLON_GAME(gameState);
 		
 		var scene1Options = gameState.scenes[0];
-		var scene1 = new Scene(game.canvas, game.engine, scene1Options);
+		var scene1 = new Scene(game, scene1Options);
 		game.loadScene(scene1);
 
 		// Resize the babylon engine when the window is resized

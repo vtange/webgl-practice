@@ -10,6 +10,7 @@ function BABYLON_GAME(stateObj){
 }
 
 BABYLON_GAME.prototype.loadScene = function(sceneObj) {
+	this.state.scenes.push(sceneObj);
 
 	//load items, build world, start game
 	sceneObj.assembleGameAssets(this.state);
