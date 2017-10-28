@@ -21,14 +21,15 @@ Scene.prototype.getCamera = function(){
 	this.playerMesh.position.y = 1;
 	this.playerMesh.position.z = -55;
 	
-	var camera = new BABYLON.FollowCamera("FollowCam", new BABYLON.Vector3(55, 55, 55), this.self);
-	camera.radius = 70; // how far from the object to follow
-	camera.heightOffset = 50; // how high above the object to place the camera
-	camera.rotationOffset = 25; // the viewing angle
-	camera.cameraAcceleration = 0.05 // how fast to move
-	camera.maxCameraSpeed = 20 // speed limit
-	camera.lockedTarget = this.playerMesh; // target any mesh or object with a "position" Vector3
-
+	var camera = new BABYLON.ArcFollowCamera("FollowCam", 0.75, 0.75, 100, this.playerMesh, this.self);
+	//prevent any rotation
+	camera.lowerAlphaLimit = 0.74995;
+	camera.upperAlphaLimit = 0.75005;
+	camera.lowerBetaLimit = 0.74995;
+	camera.upperBetaLimit = 0.75005;
+	//zoom limits
+	camera.lowerRadiusLimit = 10;
+	camera.upperRadiusLimit = 200;
 	return camera;
 };
 Scene.prototype.getLighting = function(){
