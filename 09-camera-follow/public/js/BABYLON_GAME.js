@@ -21,7 +21,8 @@ BABYLON_GAME.prototype.loadScene = function(sceneObj) {
 }
 
 BABYLON_GAME.prototype.addControls = function(){
-	window.addEventListener("keydown", this.state.handleKeyboardInput.bind(this.state));
+	window.addEventListener("keydown", this.state.handleKeyDown.bind(this.state));
+	window.addEventListener("keyup", this.state.handleKeyUp.bind(this.state));
 }
 
 BABYLON_GAME.prototype.animateScene = function(scene){

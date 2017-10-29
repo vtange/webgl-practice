@@ -1,14 +1,8 @@
 function CharacterDemo(){
+	Controller.call(this);//add controller.keyDownState, etc.
 	this.arrMeshList = meshList;
 	// A dictionary of loaded meshes
 	this.MODELS = {};
-	// Controls
-	this.controls = {
-		"ArrowUp":this.moveFn.bind(this,"up"),
-		"ArrowDown":this.moveFn.bind(this,"dn"),
-		"ArrowLeft":this.moveFn.bind(this,"lf"),
-		"ArrowRight":this.moveFn.bind(this,"rt"),
-	};
 	this.scenes = [];
 	this.chars = [];
 }
@@ -17,6 +11,7 @@ CharacterDemo.prototype = Object.create(Controller.prototype);
 CharacterDemo.prototype.constructor = CharacterDemo;
 CharacterDemo.prototype.renderLoopFn = function(){
 }
+/*
 CharacterDemo.prototype.moveFn = function(strDirection)
 {
 	switch(strDirection)
@@ -40,4 +35,4 @@ CharacterDemo.prototype.moveFn = function(strDirection)
 	}
 	//up,right = negative x,z
 	//left,down = x,z
-}
+}*/
