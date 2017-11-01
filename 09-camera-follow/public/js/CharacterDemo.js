@@ -11,28 +11,11 @@ CharacterDemo.prototype = Object.create(Controller.prototype);
 CharacterDemo.prototype.constructor = CharacterDemo;
 CharacterDemo.prototype.renderLoopFn = function(){
 }
-/*
-CharacterDemo.prototype.moveFn = function(strDirection)
+
+CharacterDemo.prototype.moveFn = function(arDirection)
 {
-	switch(strDirection)
-	{
-		case "up":
-			this.scenes[0].playerMesh.position.z -= 1;
-			this.scenes[0].playerMesh.sprite.position.z -= 1;
-			break;
-		case "rt":
-			this.scenes[0].playerMesh.position.x -= 1;
-			this.scenes[0].playerMesh.sprite.position.x -= 1;
-			break;
-		case "dn":
-			this.scenes[0].playerMesh.position.z += 1;
-			this.scenes[0].playerMesh.sprite.position.z += 1;
-			break;
-		case "lf":
-			this.scenes[0].playerMesh.position.x += 1;
-			this.scenes[0].playerMesh.sprite.position.x += 1;
-			break;
-	}
-	//up,right = negative x,z
-	//left,down = x,z
-}*/
+	this.scenes[0].playerMesh.position.x -= arDirection[0];
+	this.scenes[0].playerMesh.sprite.position.x -= arDirection[0];
+	this.scenes[0].playerMesh.position.z -= arDirection[1];
+	this.scenes[0].playerMesh.sprite.position.z -= arDirection[1];
+}

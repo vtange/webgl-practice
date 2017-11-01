@@ -6,7 +6,18 @@ function Controller()
 //warning, this will eventually be a hot mess since Game extends Controller (this.keyDownState can be overwritten by Game)
 
 Controller.prototype.handleKeyDown = function(event){
+    var toPlay;
     this.keyDownState[event.code] = true;
+    toPlay = this.playControllerState();
+    if(Array.isArray(toPlay))
+    {
+        //movement
+        this.moveFn(toPlay);
+    }
+    else
+    {
+
+    }
 }
 
 Controller.prototype.handleKeyUp = function(event){
