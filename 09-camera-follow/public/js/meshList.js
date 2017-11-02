@@ -7,4 +7,4 @@ function MeshConstruct(arr)
 }
 var meshList = [];
 
-meshList.push(new MeshConstruct(["SketchUp","assets/","room3.gltf",true]));
+meshList.push(new MeshConstruct(["SketchUp","assets/","room5.gltf",true]));
