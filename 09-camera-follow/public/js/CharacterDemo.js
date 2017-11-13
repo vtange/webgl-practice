@@ -10,6 +10,12 @@ function CharacterDemo(){
 CharacterDemo.prototype = Object.create(Controller.prototype);
 CharacterDemo.prototype.constructor = CharacterDemo;
 CharacterDemo.prototype.renderLoopFn = function(){
+    var mvmtState = this.getMvmtState();
+    if(Array.isArray(mvmtState))
+    {
+        //movement
+        this.moveFn(mvmtState);
+    }
 }
 
 CharacterDemo.prototype.moveFn = function(arDirection)
