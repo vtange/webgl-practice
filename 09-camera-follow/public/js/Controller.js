@@ -21,7 +21,10 @@ Controller.prototype.handleKeyDown = function(event){
 }
 
 Controller.prototype.handleKeyUp = function(event){
+    var toPlay;
     delete this.keyDownState[event.code];
+    //check movement keys, end player character velocity towards directions that are stopped.
+    //this.stopFn(event.code);
 }
 
 Controller.prototype.getCurrValidControls = function(){

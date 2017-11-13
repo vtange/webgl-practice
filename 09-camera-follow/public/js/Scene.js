@@ -7,29 +7,17 @@ function Scene(game, options)
 	this.canvas = game.canvas;
 	this.spriteManagerPlayer = new BABYLON.SpriteManager("playerManagr","assets/Player.png", 2, 64, this.self);
 
-	var phys = new BABYLON.CannonJSPlugin(); // new BABYLON.OimoJSPlugin()
-	var grav = new BABYLON.Vector3(0, -9.8, 0);
-	this.self.enablePhysics( grav, phys);
-	//this.self.enablePhysics();
-	// Enable collisions globally. 
-	//this.self.collisionsEnabled = true;
+	
+	this.self.enablePhysics();
+	this.self.getPhysicsEngine().setGravity(new BABYLON.Vector3(0, -40, 0));
 
 	this.playerMesh = BABYLON.Mesh.CreateSphere("sphere1", 16, 2, this.self);
 	this.playerMesh.position.x = 55;
 	this.playerMesh.position.y = 23;
 	this.playerMesh.position.z = 55;
-	this.playerMesh.physicsImpostor = new BABYLON.PhysicsImpostor(this.playerMesh, BABYLON.PhysicsImpostor.BoxImpostor,  { mass: 1, friction:999, restitution: 0 }, this.self);
 	// Create the camera
 	this.camera = this.getCamera(this.playerMesh);
 	this.self.activeCamera = this.camera;
-
-	var ground = BABYLON.Mesh.CreateGround("ground1", 96, 96, 2,  this.self);
-	ground.position.x = 55;
-	ground.position.y = -10;
-	ground.position.z = 55;
-	console.log(ground);
-	ground.physicsImpostor = new BABYLON.PhysicsImpostor(ground, BABYLON.PhysicsImpostor.BoxImpostor, { mass: 0, restitution: 0.9 }, this.self);
-
 
 	// Create light
 	this.shadowGen = this.getLighting();
@@ -55,14 +43,9 @@ Scene.prototype.getLighting = function(){
 Scene.prototype.loadMeshes = function(gameState)
 {
 	var scene = this.self;
+	var playerBall = this.playerMesh;
     var meshLoadPromiseChain = gameState.arrMeshList.map(function(mesh){
 		return new Promise(function(resolve,fail){
-	// Load the model
-	/*
-    BABYLON.SceneLoader.ImportMesh("SketchUp", "https://raw.githubusercontent.com/vtange/webgl-practice/master/09-camera-follow/public/assets/", "room3.gltf", scene, function (meshes) {
-
-    });
-*/
 			// Import Mesh Model to the scene
 			BABYLON.SceneLoader.ImportMesh(mesh.strName, mesh.strFolderName, mesh.strFilename, scene, function (meshes) {
 				if(!meshes.length)
@@ -71,14 +54,12 @@ Scene.prototype.loadMeshes = function(gameState)
 					fail();
 					return;
 				}
-				console.log("got mesh");
 				meshes.forEach(function(m){
-					//if(!mesh.isGround) m.isVisible = false;
-					m.position.x = 0;
-					m.position.y = 0;
-					m.position.z = 0;
-					m.physicsImpostor = new BABYLON.PhysicsImpostor(m, BABYLON.PhysicsImpostor.MeshImpostor, { mass: 0, restitution: 0.9 }, scene);
-				});
+					if(m.parent) {
+						m.physicsImpostor = new BABYLON.PhysicsImpostor(m, BABYLON.PhysicsImpostor.MeshImpostor, { mass: 0, restitution: 0, ignoreParent: true }, scene);
+					} 
+				});''
+				playerBall.physicsImpostor = new BABYLON.PhysicsImpostor(playerBall, BABYLON.PhysicsImpostor.SphereImpostor, { mass: 1, restitution: 0, nativeOptions: { angularDamping: 1 }  }, scene);
 				//hide all models other than ground, deploy as needed
 				resolve(true);
 			});
