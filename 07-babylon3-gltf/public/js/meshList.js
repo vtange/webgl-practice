@@ -6,10 +6,15 @@ function MeshConstruct(arr)
 }
 var meshList = [];
 
-//1st block
+//block
 //meshList.push(new MeshConstruct(["Cube","assets/","material.gltf"]));
-//1st wedge
+//wedge, same file as ^ block
 //meshList.push(new MeshConstruct(["group_0","assets/","material.gltf"]));
-//1st room
-meshList.push(new MeshConstruct(["SketchUp","assets/","room.gltf"]));
-meshList.push(new MeshConstruct(["SketchUp.001","assets/","room.gltf"]));
+//Room
+//meshList.push(new MeshConstruct(["SketchUp","assets/","room.gltf"]));
+//meshList.push(new MeshConstruct(["SketchUp.001","assets/","room.gltf"]));
+
+//something dled from Sketchfab
+scene.meshes.forEach(function(mesh){
+    meshList.push(new MeshConstruct([mesh.name,"assets/","scene.gltf"]));
+})
