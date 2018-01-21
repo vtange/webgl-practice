@@ -195,6 +195,82 @@
                 0.0047740936279296875
             ], 
             "type" : "VEC2"
+        }, 
+        {
+            "bufferView" : 13, 
+            "componentType" : 5121, 
+            "count" : 12, 
+            "max" : [
+                7
+            ], 
+            "min" : [
+                0
+            ], 
+            "type" : "SCALAR"
+        }, 
+        {
+            "bufferView" : 14, 
+            "componentType" : 5126, 
+            "count" : 8, 
+            "max" : [
+                0.7166145443916321, 
+                2.8520712852478027, 
+                0.7166145443916321
+            ], 
+            "min" : [
+                -0.7166145443916321, 
+                0.0, 
+                -0.7166145443916321
+            ], 
+            "type" : "VEC3"
+        }, 
+        {
+            "bufferView" : 15, 
+            "componentType" : 5126, 
+            "count" : 8, 
+            "max" : [
+                -0.0, 
+                0.0, 
+                -0.0
+            ], 
+            "min" : [
+                -1.0, 
+                -0.9999999403953552, 
+                -0.0
+            ], 
+            "type" : "VEC3"
+        }, 
+        {
+            "bufferView" : 16, 
+            "componentType" : 5126, 
+            "count" : 8, 
+            "max" : [
+                1.0, 
+                0.0, 
+                -0.0, 
+                1.0
+            ], 
+            "min" : [
+                0.0, 
+                -1.2033196128413692e-07, 
+                -1.0, 
+                1.0
+            ], 
+            "type" : "VEC4"
+        }, 
+        {
+            "bufferView" : 17, 
+            "componentType" : 5126, 
+            "count" : 8, 
+            "max" : [
+                0.9942793846130371, 
+                3.3114469051361084
+            ], 
+            "min" : [
+                0.0, 
+                -1.8895719051361084
+            ], 
+            "type" : "VEC2"
         }
     ], 
     "asset" : {
@@ -279,11 +355,41 @@
             "byteLength" : 72, 
             "byteOffset" : 1664, 
             "target" : 34962
+        }, 
+        {
+            "buffer" : 0, 
+            "byteLength" : 12, 
+            "byteOffset" : 1736, 
+            "target" : 34963
+        }, 
+        {
+            "buffer" : 0, 
+            "byteLength" : 96, 
+            "byteOffset" : 1748, 
+            "target" : 34962
+        }, 
+        {
+            "buffer" : 0, 
+            "byteLength" : 96, 
+            "byteOffset" : 1844, 
+            "target" : 34962
+        }, 
+        {
+            "buffer" : 0, 
+            "byteLength" : 128, 
+            "byteOffset" : 1940, 
+            "target" : 34962
+        }, 
+        {
+            "buffer" : 0, 
+            "byteLength" : 64, 
+            "byteOffset" : 2068, 
+            "target" : 34962
         }
     ], 
     "buffers" : [
         {
-            "byteLength" : 1736, 
+            "byteLength" : 2132, 
             "uri" : "wall_sconce.bin"
         }
     ], 
@@ -363,6 +469,20 @@
                     "material" : 0
                 }
             ]
+        }, 
+        {
+            "name" : "Plane.001", 
+            "primitives" : [
+                {
+                    "attributes" : {
+                        "NORMAL" : 15, 
+                        "POSITION" : 14, 
+                        "TANGENT" : 16, 
+                        "TEXCOORD_0" : 17
+                    }, 
+                    "indices" : 13
+                }
+            ]
         }
     ], 
     "nodes" : [
@@ -397,6 +517,10 @@
                 1.6438496112823486, 
                 -0.0
             ]
+        }, 
+        {
+            "mesh" : 3, 
+            "name" : "shadow"
         }
     ], 
     "samplers" : [
@@ -409,7 +533,8 @@
             "nodes" : [
                 1, 
                 2, 
-                0
+                0, 
+                3
             ]
         }
     ], 
