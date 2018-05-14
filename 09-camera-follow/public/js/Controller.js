@@ -8,20 +8,19 @@ function Controller()
 Controller.prototype.handleKeyDown = function(event){
     var aControls = this.getCurrValidControls();
     var toPlay = null;
-    this.keyDownState[event.code] = true;
     //glance at keydown'ed keys and play what needs to be played
     for(var actionKeyCode in aControls)
     {
-        if(!toPlay || toPlay.priority < this.keyDownState[actionKeyCode].priority )
+        if(!toPlay || toPlay.priority < aControls[actionKeyCode].priority )
         {
-            toPlay = this.keyDownState[actionKeyCode];
+            toPlay = aControls[actionKeyCode];
         }
     }
 
     if(toPlay)
     {
         //play action key
-       //return toPlay.value;
+        toPlay.fn();
     }
 }
 
@@ -38,6 +37,9 @@ Controller.prototype.getCurrValidControls = function(){
         "enter" : {priority:999,value:"show_menu"}
 
         */
+        "KeyB" : {priority:999,fn:function(){
+            console.log("B");
+        }}
     };
 }
 
