@@ -32,7 +32,6 @@ BABYLON_GAME.prototype.animateScene = function(scene){
 	this.engine.runRenderLoop(function () {
 		scene.render();
 
-		//move enemys 'backward' (toward player)
 		this.state.renderLoopFn();
 	}.bind(this));
 }

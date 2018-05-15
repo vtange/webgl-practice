@@ -8,12 +8,16 @@ function Controller()
 Controller.prototype.handleKeyDown = function(event){
     var aControls = this.getCurrValidControls();
     var toPlay = null;
+
+    //mark key of keyboard as pressed. needed for mvmt
+    this.keyDownState[event.code] = true;
+
     //glance at keydown'ed keys and play what needs to be played
     for(var actionKeyCode in aControls)
     {
         if(!toPlay || toPlay.priority < aControls[actionKeyCode].priority )
         {
-            toPlay = aControls[actionKeyCode];
+            toPlay = aControls[event.code];
         }
     }
 
@@ -36,10 +40,12 @@ Controller.prototype.getCurrValidControls = function(){
         /*
         "enter" : {priority:999,value:"show_menu"}
 
-        */
+        
         "KeyB" : {priority:999,fn:function(){
-            console.log("B");
-        }}
+            this.scenes[0].camera.alpha += .02;
+        }.bind(this)}
+
+        */
     };
 }
 

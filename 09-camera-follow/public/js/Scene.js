@@ -19,6 +19,13 @@ function Scene(game, options)
 	this.camera = this.getCamera(this.playerMesh);
 	this.self.activeCamera = this.camera;
 
+	// Camera Animate
+	//unregisterBeforeRender to remove
+	/*
+	this.self.registerBeforeRender(function(){
+		this.camera.alpha += .01;
+	}.bind(this));*/
+
 	// Create light
 	this.shadowGen = this.getLighting();
 }
