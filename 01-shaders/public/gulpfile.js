@@ -11,9 +11,7 @@ gulp.task('default', function () {
             baseDir: "./"
         }
     });
-	gulp.watch("*.js", ['sync']);
-});
-
-gulp.task('sync', function() {
-    browserSync.reload();
+	gulp.watch("*.js", function() {
+        browserSync.reload();
+    });
 });

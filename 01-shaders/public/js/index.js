@@ -1,5 +1,5 @@
 "use strict";
- 
+
 document.addEventListener("DOMContentLoaded", startGame, false);
 var mapImageController = {
     applyMapImage:function(e)
@@ -7,6 +7,28 @@ var mapImageController = {
                         var file = mapImageController.input.files[0];
                         this.map = new BABYLON.Texture(file.name, this.scene);
                     }
+}
+
+function assignMainsToShader(scene, strShaderName, shaderMaterial){
+    var globeTexture = mapImageController.map = new BABYLON.Texture("globe.png", scene);
+    //texture is upside down, multiply vUV in fragmentshader (glsl) by -1
+
+    switch(strShaderName){
+        case("flat"):
+            shaderMaterial.setTexture("textureSampler", globeTexture);
+            break;
+        case("cell_shading"):
+            break;
+        case("gradient"):
+            shaderMaterial.setFloat("time", 0);
+            shaderMaterial.setFloat("offset", 0);
+            shaderMaterial.setFloat("exponent", 0.6);
+            shaderMaterial.setColor3("topColor", BABYLON.Color3.FromInts(0,119,255));
+            shaderMaterial.setColor3("bottomColor", BABYLON.Color3.FromInts(240,240,255));
+            shaderMaterial.setVector3("cameraPosition", BABYLON.Vector3.Zero());
+            break;
+    }
+    shaderMaterial.backFaceCulling = false; //visible from backside
 }
 
 function startGame() {
@@ -19,24 +41,14 @@ function startGame() {
         camera.attachControl(canvas);
 
         BABYLON.Engine.ShadersRepository = "js/shaders/";
-    
+
         // Compile
         var shaderMaterial = new BABYLON.ShaderMaterial("flat", scene, "flat", {
                 attributes: ["position", "normal", "uv"],
                 uniforms: ["world", "worldView", "worldViewProjection"]
             });//2nd object enables lighting to affect material
 
-        var globeTexture = mapImageController.map = new BABYLON.Texture("globe.png", scene);
-        //texture is upside down, multiply vUV in fragmentshader (glsl) by -1
-        
-        shaderMaterial.setTexture("textureSampler", globeTexture);
-        shaderMaterial.setFloat("time", 0);
-        shaderMaterial.setFloat("offset", 0);
-        shaderMaterial.setFloat("exponent", 0.6);
-        shaderMaterial.setColor3("topColor", BABYLON.Color3.FromInts(0,119,255));
-        shaderMaterial.setColor3("bottomColor", BABYLON.Color3.FromInts(240,240,255));
-        shaderMaterial.setVector3("cameraPosition", BABYLON.Vector3.Zero());
-        shaderMaterial.backFaceCulling = false; //visible from backside
+        assignMainsToShader(scene, "flat", shaderMaterial);
 
         var poles = new BABYLON.StandardMaterial("poles", scene);
         poles.emissiveColor = new BABYLON.Color3(0.9, 0.9, 0.9);
@@ -53,7 +65,7 @@ function startGame() {
         sphere.subMeshes.push(new BABYLON.SubMesh(1, 0, verticesCount, 864, 2592, sphere));
         sphere.subMeshes.push(new BABYLON.SubMesh(2, 0, verticesCount, 3456, 430, sphere));
         sphere.material = globe;
- 
+
         initGui(sphere, scene);
         engine.runRenderLoop(function () {
             sphere.rotation.y += 0.01;
@@ -88,13 +100,14 @@ function initGui(sphere, scene) {
                 attributes: ["position", "normal", "uv"],
                 uniforms: ["world", "worldView", "worldViewProjection"]
             });//2nd object enables lighting to affect material
+        assignMainsToShader(scene, selection, sphere.material);
     });;
 
     var f1 = gui.addFolder('Todo');
-    
+
     f1.add(switchr, 'latitude', 0, 30 ).name("Pole Latitude").step(5).onChange(function(){
     });
-    
+
     //f1.add(switchr, 'loadFile').name('Load Map Image');
 
     f1.open();
