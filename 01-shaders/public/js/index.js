@@ -94,7 +94,7 @@ function initGui(sphere, scene) {
     };
     var switchr = new Switcher();
     var gui = new dat.GUI();
-    gui.add(switchr, 'shader', { Cell: 'cell_shading', Flat: 'flat', Gradient: 'gradient' } ).onChange(function(){
+    gui.add(switchr, 'shader', { Cell: 'cell_shading', Flat: 'flat', Gradient: 'gradient', Phong: 'phong' } ).onChange(function(){
         var selection = this.object.shader;
         sphere.material = new BABYLON.ShaderMaterial(selection, scene, selection, {
                 attributes: ["position", "normal", "uv"],
